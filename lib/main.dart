@@ -2,8 +2,11 @@
 import 'package:flutter/material.dart';
 import "./widgets/TodoList.dart";
 import "./widgets/NewTodo.dart";
+import 'package:card_swiper/card_swiper.dart';
 
 void main() => runApp(MyApp());
+
+final ThemeData theme = ThemeData();
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -12,6 +15,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Todo App',
+      theme: ThemeData.from(
+        colorScheme: const ColorScheme.light(),
+      ).copyWith(
+        colorScheme: theme.colorScheme.copyWith(secondary: Colors.blue),
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.android: ZoomPageTransitionsBuilder(),
+          },
+        ),
+      ),
       home: MyHomePage(),
     );
   }
@@ -24,6 +37,32 @@ class MyHomePage extends StatelessWidget {
     {"name": "🥦  Brocolli"},
     {"name": "🍎 Apples"},
     {"name": "🍎 Apples"},
+  ];
+  final _pinnedTodos = [
+    {
+      "listName": "School",
+      "color": Colors.yellow[50],
+      "listItems": [
+        {"name": "📚 Study for 2 hours."},
+        {"name": "🔎 Research for school project. Like very much"},
+      ],
+    },
+    {
+      "listName": "Grocheries",
+      "color": Colors.blue[50],
+      "listItems": [
+        {"name": "🥕  Carrots"},
+        {"name": "🥦  Brocolli"},
+        {"name": "🍎 Apples"},
+        {"name": "🍎 Apples"},
+        {"name": "🍊 Oranges"},
+        {"name": "🥕  Carrots"},
+        {"name": "🥦  Brocolli"},
+        {"name": "🍎 Apples"},
+        {"name": "🍎 Apples"},
+        {"name": "🍊 Oranges"},
+      ],
+    }
   ];
 
   void _addNewTodo(BuildContext context) {
@@ -66,7 +105,30 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            TodoList(todos: _todos, listName: "Grocheries",),
+            Text("Pinned Todos"),
+            SizedBox(
+              height: 350,
+              width: 800,
+              child: Swiper(
+                itemBuilder: (BuildContext context, int index) {
+                  return TodoList(
+                    todos: _pinnedTodos[index]["listItems"] as List,
+                    listName: _pinnedTodos[index]["listName"] as String,
+                    color: _pinnedTodos[index]["color"] as Color,
+                  );
+                },
+                itemCount: _pinnedTodos.length,
+                itemWidth: 700,
+                itemHeight: 300,
+                // pagination: SwiperPagination(),
+                // viewportFraction: 0.95,
+                loop: false,
+              ),
+            ),
+            TodoList(
+              todos: _todos,
+              listName: "Grocheries",
+            ),
           ],
         ),
       ),
@@ -76,7 +138,9 @@ class MyHomePage extends StatelessWidget {
           margin: EdgeInsets.all(10),
           child: Container(
             decoration: BoxDecoration(
-                color: Colors.teal, borderRadius: BorderRadius.circular(20)),
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(20),
+            ),
             padding: EdgeInsets.all(20),
             child: Icon(Icons.add, color: Colors.white),
           ),
