@@ -1,14 +1,15 @@
 import "package:flutter/material.dart";
 import 'package:todos/pages/TodoPage.dart';
+import "../helpers/ColorUtils.dart";
 // import "NewTodo.dart";
 import "./Todo.dart";
 
 class TodoList extends StatelessWidget {
   final List todos;
   final String listName;
-  final Color? color;
+  final Color color;
 
-  TodoList({Key? key, required this.todos, required this.listName, this.color})
+  const TodoList({Key? key, required this.todos, required this.listName, required this.color})
       : super(key: key);
 
   @override
@@ -20,7 +21,9 @@ class TodoList extends StatelessWidget {
       width: 800,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: color ?? Colors.grey[100]),
+          color: color,
+          border: Border.all(width: 2.0, color: darken(color)),
+    ),
       child: ListView.builder(
         itemCount: todos.isEmpty ? 1 : todos.length + 1,
         itemBuilder: (ctx, index) {
@@ -55,13 +58,17 @@ class TodoList extends StatelessWidget {
             );
           }
           index -= 1;
-          return Expanded(
-            child: Column(children: [
-              Todo(
-                todoText: todos[index]["name"] as String,
+          return Row(
+            children: [
+              Expanded(
+                child: Column(children: [
+                  Todo(
+                    todoText: todos[index]["name"] as String,
+                  ),
+                  Divider(color: Colors.grey[300])
+                ]),
               ),
-              Divider(color: Colors.grey[300])
-            ]),
+            ],
           );
         },
       ),

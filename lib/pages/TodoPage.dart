@@ -19,7 +19,7 @@ class TodoPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             listName,
-            style: const TextStyle(color: Colors.black),
+            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           elevation: 0,
           toolbarHeight: 70,

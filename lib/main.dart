@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:todos/widgets/PinnedTodos.dart';
+import 'package:todos/widgets/TodoListCollapsed.dart';
 import "./widgets/TodoList.dart";
 import "./widgets/NewTodo.dart";
-import 'package:card_swiper/card_swiper.dart';
 
 void main() => runApp(MyApp());
 
@@ -32,12 +33,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
-  final _todos = [
-    {"name": "🥕  Carrots"},
-    {"name": "🥦  Brocolli"},
-    {"name": "🍎 Apples"},
-    {"name": "🍎 Apples"},
-  ];
   final _pinnedTodos = [
     {
       "listName": "School",
@@ -64,6 +59,16 @@ class MyHomePage extends StatelessWidget {
       ],
     }
   ];
+  final _normalTodos = [
+    {
+      "listName": "2022 Goals",
+      "color": Colors.yellow[50],
+      "listItems": [
+        {"name": "🏔️ Climb Mount Everest"},
+        {"name": "🤑 Raise paycheck"},
+      ],
+    },
+  ];
 
   void _addNewTodo(BuildContext context) {
     showModalBottomSheet(
@@ -84,18 +89,6 @@ class MyHomePage extends StatelessWidget {
           "Todos",
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
-        actions: const <Widget>[
-          // Container(
-          //   margin: EdgeInsets.all(15),
-          //   width: 40,
-          //   height: 40,
-          //   decoration: BoxDecoration(
-          //     borderRadius: BorderRadius.circular(10),
-          //     color: Colors.blueAccent,
-          //   ),
-          //   child: IconButton(onPressed: () {}, icon: Icon(Icons.add)),
-          // )
-        ],
       ),
       drawer: Drawer(
         child: Text("Hello"),
@@ -105,30 +98,8 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("Pinned Todos"),
-            SizedBox(
-              height: 350,
-              width: 800,
-              child: Swiper(
-                itemBuilder: (BuildContext context, int index) {
-                  return TodoList(
-                    todos: _pinnedTodos[index]["listItems"] as List,
-                    listName: _pinnedTodos[index]["listName"] as String,
-                    color: _pinnedTodos[index]["color"] as Color,
-                  );
-                },
-                itemCount: _pinnedTodos.length,
-                itemWidth: 700,
-                itemHeight: 300,
-                // pagination: SwiperPagination(),
-                // viewportFraction: 0.95,
-                loop: false,
-              ),
-            ),
-            TodoList(
-              todos: _todos,
-              listName: "Grocheries",
-            ),
+            PinnedTodos(pinnedTodoLists: _pinnedTodos),
+            TodoListCollapsed(),
           ],
         ),
       ),

@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:vibration/vibration.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+// import 'package:flutter_slidable/flutter_slidable.dart';
 
 class Todo extends StatefulWidget {
   final String todoText;
