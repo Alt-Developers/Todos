@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
-import "./TodoList.dart";
+import 'TodoListItem.dart';
 
 class PinnedTodos extends StatefulWidget {
   final List pinnedTodoLists;
@@ -45,7 +45,8 @@ class _PinnedTodosState extends State<PinnedTodos> {
           child: Swiper(
             onIndexChanged: onSwiperSwipped,
             itemBuilder: (BuildContext context, int index) {
-              return TodoList(
+              return TodoListItem(
+                id: widget.pinnedTodoLists[index]["id"] as String,
                 todos: widget.pinnedTodoLists[index]["listItems"] as List,
                 listName: widget.pinnedTodoLists[index]["listName"] as String,
                 color: widget.pinnedTodoLists[index]["color"] as Color,

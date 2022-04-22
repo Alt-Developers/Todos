@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import "package:provider/provider.dart";
+
+import 'package:todos/screens/TodoPage.dart';
 import 'package:todos/widgets/PinnedTodos.dart';
 import 'package:todos/widgets/TodoListCollapsed.dart';
-import "./widgets/TodoList.dart";
+import './providers/TodoProvider.dart';
 import "./widgets/NewTodo.dart";
 
 void main() => runApp(MyApp());
@@ -14,61 +17,31 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Todo App',
-      theme: ThemeData.from(
-        colorScheme: const ColorScheme.light(),
-      ).copyWith(
-        colorScheme: theme.colorScheme.copyWith(secondary: Colors.blue),
-        pageTransitionsTheme: const PageTransitionsTheme(
-          builders: <TargetPlatform, PageTransitionsBuilder>{
-            TargetPlatform.android: ZoomPageTransitionsBuilder(),
+    return ChangeNotifierProvider(
+      create: (context) =>  TodoProvider(),
+      child: MaterialApp(
+          title: 'Todo App',
+          theme: ThemeData.from(
+            colorScheme: const ColorScheme.light(),
+          ).copyWith(
+            colorScheme: theme.colorScheme.copyWith(secondary: Colors.blue),
+            pageTransitionsTheme: const PageTransitionsTheme(
+              builders: <TargetPlatform, PageTransitionsBuilder>{
+                TargetPlatform.android: ZoomPageTransitionsBuilder(),
+              },
+            ),
+          ),
+          home: MyHomePage(),
+          routes: {
+            TodoPage.routeName: (context) => TodoPage(),
           },
-        ),
       ),
-      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({Key? key}) : super(key: key);
-  final _pinnedTodos = [
-    {
-      "listName": "School",
-      "color": Colors.yellow[50],
-      "listItems": [
-        {"name": "📚 Study for 2 hours."},
-        {"name": "🔎 Research for school project. Like very much"},
-      ],
-    },
-    {
-      "listName": "Grocheries",
-      "color": Colors.blue[50],
-      "listItems": [
-        {"name": "🥕  Carrots"},
-        {"name": "🥦  Brocolli"},
-        {"name": "🍎 Apples"},
-        {"name": "🍎 Apples"},
-        {"name": "🍊 Oranges"},
-        {"name": "🥕  Carrots"},
-        {"name": "🥦  Brocolli"},
-        {"name": "🍎 Apples"},
-        {"name": "🍎 Apples"},
-        {"name": "🍊 Oranges"},
-      ],
-    }
-  ];
-  final _normalTodos = [
-    {
-      "listName": "2022 Goals",
-      "color": Colors.yellow[50],
-      "listItems": [
-        {"name": "🏔️ Climb Mount Everest"},
-        {"name": "🤑 Raise paycheck"},
-      ],
-    },
-  ];
+  const MyHomePage({Key? key}) : super(key: key);
 
   void _addNewTodo(BuildContext context) {
     showModalBottomSheet(
@@ -79,6 +52,8 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _pinnedTodos =  Provider.of<TodoProvider>(context).pinnedTodos;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

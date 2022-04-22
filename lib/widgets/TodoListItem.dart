@@ -1,15 +1,17 @@
 import "package:flutter/material.dart";
-import 'package:todos/pages/TodoPage.dart';
+import 'package:todos/screens/TodoPage.dart';
 import "../helpers/ColorUtils.dart";
+import "dart:math";
 // import "NewTodo.dart";
-import "./Todo.dart";
+import 'TodoItem.dart';
 
-class TodoList extends StatelessWidget {
+class TodoListItem extends StatelessWidget {
   final List todos;
   final String listName;
   final Color color;
+  final String id;
 
-  const TodoList({Key? key, required this.todos, required this.listName, required this.color})
+  const TodoListItem({Key? key, required this.todos, required this.listName, required this.color, required this.id})
       : super(key: key);
 
   @override
@@ -40,16 +42,7 @@ class TodoList extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TodoPage(
-                            listName: listName,
-                            color: color,
-                            todos: todos,
-                          ),
-                        ),
-                      );
+                     Navigator.of(context).pushNamed(TodoPage.routeName, arguments: id);
                     },
                     child: const Icon(Icons.edit),
                   ),
@@ -62,7 +55,8 @@ class TodoList extends StatelessWidget {
             children: [
               Expanded(
                 child: Column(children: [
-                  Todo(
+                  TodoItem(
+                    groupId: "a",
                     todoText: todos[index]["name"] as String,
                   ),
                   Divider(color: Colors.grey[300])
