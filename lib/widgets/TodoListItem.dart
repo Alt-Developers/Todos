@@ -56,8 +56,10 @@ class TodoListItem extends StatelessWidget {
               Expanded(
                 child: Column(children: [
                   TodoItem(
-                    groupId: "a",
-                    todoText: todos[index]["name"] as String,
+                    listId: id,
+                    isChecked: todos[index].isChecked as bool,
+                    id: todos[index].id as String,
+                    todoText: todos[index].name as String,
                   ),
                   Divider(color: Colors.grey[300])
                 ]),

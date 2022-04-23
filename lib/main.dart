@@ -18,23 +18,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) =>  TodoProvider(),
+      create: (context) => TodoProvider(),
       child: MaterialApp(
-          title: 'Todo App',
-          theme: ThemeData.from(
-            colorScheme: const ColorScheme.light(),
-          ).copyWith(
-            colorScheme: theme.colorScheme.copyWith(secondary: Colors.blue),
-            pageTransitionsTheme: const PageTransitionsTheme(
-              builders: <TargetPlatform, PageTransitionsBuilder>{
-                TargetPlatform.android: ZoomPageTransitionsBuilder(),
-              },
-            ),
+        title: 'Todo App',
+        theme: ThemeData.from(
+          colorScheme: const ColorScheme.light(),
+        ).copyWith(
+          colorScheme: theme.colorScheme.copyWith(secondary: Colors.blue),
+          pageTransitionsTheme: const PageTransitionsTheme(
+            builders: <TargetPlatform, PageTransitionsBuilder>{
+              TargetPlatform.android: ZoomPageTransitionsBuilder(),
+            },
           ),
-          home: MyHomePage(),
-          routes: {
-            TodoPage.routeName: (context) => TodoPage(),
-          },
+        ),
+        home: MyHomePage(),
+        routes: {
+          TodoPage.routeName: (context) => TodoPage(),
+        },
       ),
     );
   }
@@ -45,15 +45,17 @@ class MyHomePage extends StatelessWidget {
 
   void _addNewTodo(BuildContext context) {
     showModalBottomSheet(
-        context: context,
-        builder: (_) => NewTodo(),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)));
+      context: context,
+      builder: (_) => NewTodo(),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final _pinnedTodos =  Provider.of<TodoProvider>(context).pinnedTodos;
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -65,15 +67,28 @@ class MyHomePage extends StatelessWidget {
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
-      drawer: Drawer(
-        child: Text("Hello"),
+      drawer: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+        ),
+        child: Drawer(
+          child: ListView(children: [
+            DrawerHeader(
+              child: Container(
+                color: Colors.blue,
+                child: Text("hello"),
+              ),
+            ),
+          ]),
+        ),
       ),
       body: Container(
         color: Colors.grey[200],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            PinnedTodos(pinnedTodoLists: _pinnedTodos),
+          children: const <Widget>[
+            PinnedTodos(),
             TodoListCollapsed(),
           ],
         ),
@@ -84,11 +99,11 @@ class MyHomePage extends StatelessWidget {
           margin: EdgeInsets.all(10),
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Colors.white,
               borderRadius: BorderRadius.circular(20),
             ),
             padding: EdgeInsets.all(20),
-            child: Icon(Icons.add, color: Colors.white),
+            child: Icon(Icons.add),
           ),
         ),
       ),

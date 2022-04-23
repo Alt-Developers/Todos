@@ -7,9 +7,10 @@ class TodoList {
   final List<Todo> listItems;
   final String id;
 
-  TodoList(
-      {required this.listName,
-      required this.listColor,
-      required this.listItems,
-      required this.id});
+  TodoList({
+    required this.listName,
+    required this.listColor,
+    required this.listItems,
+    required this.id,
+  });
 }

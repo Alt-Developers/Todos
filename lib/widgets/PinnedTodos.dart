@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'TodoListItem.dart';
+import "../models/Todo.dart";
+import 'package:provider/provider.dart';
+import "../providers/TodoProvider.dart";
 
 class PinnedTodos extends StatefulWidget {
-  final List pinnedTodoLists;
-  const PinnedTodos({Key? key, required this.pinnedTodoLists})
+  const PinnedTodos({Key? key})
       : super(key: key);
 
   @override
@@ -22,6 +24,8 @@ class _PinnedTodosState extends State<PinnedTodos> {
 
   @override
   Widget build(BuildContext context) {
+    final _pinnedTodos =  Provider.of<TodoProvider>(context).pinnedTodos;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -35,7 +39,7 @@ class _PinnedTodosState extends State<PinnedTodos> {
                 "Pinned Lists",
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
-              Text("${pageIndex + 1} / ${widget.pinnedTodoLists.length}"),
+              Text("${pageIndex + 1} / ${_pinnedTodos.length}"),
             ],
           ),
         ),
@@ -45,14 +49,16 @@ class _PinnedTodosState extends State<PinnedTodos> {
           child: Swiper(
             onIndexChanged: onSwiperSwipped,
             itemBuilder: (BuildContext context, int index) {
+              print("${_pinnedTodos[index]} aosidjoaidjj");
+              // return TodoListItem(todos: [Todo(name: "hello")], listName: "hello", color: Colors.green, id: "askduhsiduh")
               return TodoListItem(
-                id: widget.pinnedTodoLists[index]["id"] as String,
-                todos: widget.pinnedTodoLists[index]["listItems"] as List,
-                listName: widget.pinnedTodoLists[index]["listName"] as String,
-                color: widget.pinnedTodoLists[index]["color"] as Color,
+                id: _pinnedTodos[index].id,
+                todos: _pinnedTodos[index].listItems,
+                listName: _pinnedTodos[index].listName,
+                color: _pinnedTodos[index].listColor,
               );
             },
-            itemCount: widget.pinnedTodoLists.length,
+            itemCount: _pinnedTodos.length,
             itemWidth: 700,
             itemHeight: 300,
             // viewportFraction: 0.95,
