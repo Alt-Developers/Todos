@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 import "../models/Todo.dart";
 import "../models/TodoList.dart";
 
@@ -16,10 +17,9 @@ class TodoProvider extends ChangeNotifier {
           id: "iasxcvbusocvv",
           isChecked: false,
         ),
-        Todo(name: "😭 Hello", id: "iausasdxvocvv", isChecked: true),
       ],
     ),
-        TodoList(
+    TodoList(
       id: "vbvbfbbdfdfbv",
       listName: "School",
       listColor: Colors.blue[50] as Color,
@@ -34,17 +34,18 @@ class TodoProvider extends ChangeNotifier {
       ],
     ),
   ];
-  
 
   TodoList findTodoListById(String id) {
     return pinnedTodos.firstWhere((todoList) => todoList.id == id);
   }
 
   void setIsChecked(String todoListId, String todoId, bool value) {
-   final _todoListOfId = pinnedTodos.firstWhere((todoList) => todoList.id == todoListId);
-   final _todoOfId = _todoListOfId.listItems.firstWhere((todo) => todo.id == todoId);
+    final _todoListOfId =
+        pinnedTodos.firstWhere((todoList) => todoList.id == todoListId);
+    final _todoOfId =
+        _todoListOfId.listItems.firstWhere((todo) => todo.id == todoId);
 
-   _todoOfId.isChecked = value;
-  //  notifyListeners();
+    _todoOfId.isChecked = value;
+    //  notifyListeners();
   }
 }
